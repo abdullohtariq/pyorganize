@@ -1,0 +1,9 @@
+README.md
+setup.py
+pyorganize.egg-info/PKG-INFO
+pyorganize.egg-info/SOURCES.txt
+pyorganize.egg-info/dependency_links.txt
+pyorganize.egg-info/entry_points.txt
+pyorganize.egg-info/top_level.txt
+tests/__init__.py
+tests/test_pyorganize.py

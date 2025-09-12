@@ -20,7 +20,7 @@
 # [ ] Add support for other file types using a dictionary (Images, Videos, Docs, etc.)✅
 # [ ] Implement command-line arguments (target folder, dry-run, etc.)✅
 # [ ] Refactor into functions and use OOP for extensibility✅
-# [ ] Add unit tests using PyTest
+# [ ] Add unit tests using PyTest✅
 # [ ] Add logging and error handling
 # [ ] Set up GitHub repo and CI pipeline (GitHub Actions)
 # [ ] Publish as a pip-installable CLI tool (local install)
@@ -94,6 +94,7 @@ class FileOrganizer:
         self.path = path
         self.dry_run = dry_run
         self.verbose = verbose
+        self.moved_count = 0          # initialize counter
 
     def organize(self):
         try:
@@ -103,7 +104,6 @@ class FileOrganizer:
             print("❌ Folder not found. Check your path.")
             return
 
-        moved_any = False  # Track if any file was moved or would be moved
         for item in items:
             full_path = os.path.join(self.path, item)
 
@@ -116,40 +116,40 @@ class FileOrganizer:
             if self.verbose:
                 print(f"[Verbose] Checking file: {item} (.{ext})")
 
-            matched = False
             for folder, extensions in FILE_MAP.items():
                 if ext in extensions:
-                    matched = True
                     destination_folder = os.path.join(self.path, folder)
                     os.makedirs(destination_folder, exist_ok=True)
                     dest_path = os.path.join(destination_folder, item)
 
                     base, extn = os.path.splitext(item)
                     counter = 1
-
-                    while os.path.exists(dest_path):
+                    # only rename when actually moving
+                    while os.path.exists(dest_path) and not self.dry_run:
                         new_name = f"{base}_{counter}{extn}"
                         dest_path = os.path.join(destination_folder, new_name)
                         counter += 1
 
                     if self.dry_run:
-                        # Always show dry-run actions, even if not verbose
                         print(f"[Dry Run] Would move: {item} → {folder}")
-                        moved_any = True
                     else:
                         shutil.move(full_path, dest_path)
-                        # Only show actual moves when verbose
                         if self.verbose:
                             print(f"Moved: {item} → {folder}")
-                        moved_any = True
 
-                    break  # Stop after first match
-            if not matched and self.verbose:
-                print(f"[Verbose] No category for: {item}")
+                    self.moved_count += 1     # increment counter
+                    break  # stop checking other categories
 
-        if not moved_any:
-            print("No files matched any category or needed to be moved.")
+            else:
+                # no category matched
+                if self.verbose:
+                    print(f"[Verbose] No category for: {item}")
 
+        # print summary
+        if self.dry_run:
+            print(f"[Dry Run Complete] {self.moved_count} files would have been moved.")
+        else:
+            print(f"✅ {self.moved_count} files moved.")
 
 # 🚀 Run as script
 if __name__ == '__main__':
