@@ -22,8 +22,6 @@
 # [ ] Refactor into functions and use OOP for extensibility✅
 # [ ] Add unit tests using PyTest✅
 # [ ] Add logging and error handling
-# [ ] Set up GitHub repo and CI pipeline (GitHub Actions)
-# [ ] Publish as a pip-installable CLI tool (local install)
 # [ ] Deploy to PyPI for public use
 # [ ] Package as a .exe (Windows) using PyInstaller (optional)
 

@@ -4,7 +4,7 @@ setup(
     name="pyorganize",
     version="0.1.0",
     packages=find_packages(),
-    install_requires=[],
+    install_requires=["flet"],
     entry_points={
         "console_scripts": [
             "pyorganize=pyorganize.pyorganize:main",
