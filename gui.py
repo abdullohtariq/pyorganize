@@ -40,6 +40,9 @@ PROVIDER_COLORS = {
 }
 
 
+_Button = getattr(ft, "ElevatedButton", None) or ft.Button
+
+
 def _border_all(width: float, color: str):
     if hasattr(ft, "Border") and hasattr(ft.Border, "all"):
         return ft.Border.all(width, color)
@@ -589,7 +592,7 @@ def main(page: ft.Page):
             [
                 ft.Row(
                     [
-                        ft.ElevatedButton(
+                        _Button(
                             "← All Categories",
                             on_click=lambda _: show_folder_list(is_dry_run=is_dry_run),
                             bgcolor=SURFACE_ELEVATED,
@@ -819,7 +822,7 @@ def main(page: ft.Page):
         set_status(msg, "success" if restored > 0 else "warning")
 
     # --- Action Buttons ---
-    preview_btn = ft.ElevatedButton(
+    preview_btn = _Button(
         "Preview (Dry Run)",
         icon=ft.Icons.VISIBILITY_OUTLINED,
         bgcolor=SURFACE_ELEVATED,
@@ -827,7 +830,7 @@ def main(page: ft.Page):
         on_click=lambda _: execute_organization(dry_run=True),
     )
 
-    organize_btn = ft.ElevatedButton(
+    organize_btn = _Button(
         "Organize Now",
         icon=ft.Icons.ROCKET_LAUNCH,
         bgcolor=PRIMARY_ACCENT,
@@ -835,7 +838,7 @@ def main(page: ft.Page):
         on_click=lambda _: execute_organization(dry_run=False),
     )
 
-    undo_btn = ft.ElevatedButton(
+    undo_btn = _Button(
         "Undo Last",
         icon=ft.Icons.UNDO,
         bgcolor=SURFACE_ELEVATED,
@@ -958,7 +961,7 @@ def main(page: ft.Page):
                                 spacing=2,
                                 expand=True,
                             ),
-                            ft.ElevatedButton(
+                            _Button(
                                 "Use for AI Sort",
                                 icon=ft.Icons.CHECK_CIRCLE_OUTLINE,
                                 bgcolor=accent,
@@ -978,14 +981,14 @@ def main(page: ft.Page):
                     ),
                     ft.Row(
                         [
-                            ft.ElevatedButton(
+                            _Button(
                                 "Save Key",
                                 icon=ft.Icons.SAVE_OUTLINED,
                                 bgcolor=SURFACE_ELEVATED,
                                 color=TEXT_PRIMARY,
                                 on_click=lambda _, pk=prov_key: save_single_provider(pk),
                             ),
-                            ft.ElevatedButton(
+                            _Button(
                                 "Test API Key",
                                 icon=ft.Icons.WIFI_TETHERING,
                                 bgcolor=SURFACE_ELEVATED,
@@ -1042,7 +1045,7 @@ def main(page: ft.Page):
                                 spacing=4,
                                 expand=True,
                             ),
-                            ft.ElevatedButton(
+                            _Button(
                                 "Save All Keys",
                                 icon=ft.Icons.SAVE,
                                 bgcolor=SUCCESS_GREEN,
@@ -1095,7 +1098,7 @@ def main(page: ft.Page):
                             ft.Row(
                                 [
                                     path_input,
-                                    ft.ElevatedButton(
+                                    _Button(
                                         "Browse Folder",
                                         icon=ft.Icons.CREATE_NEW_FOLDER_OUTLINED,
                                         bgcolor=PRIMARY_ACCENT,
@@ -1155,14 +1158,14 @@ def main(page: ft.Page):
     )
 
     # --- Top Navigation Header ---
-    tab_workspace_btn = ft.ElevatedButton(
+    tab_workspace_btn = _Button(
         "Workspace",
         icon=ft.Icons.DASHBOARD_OUTLINED,
         bgcolor=PRIMARY_ACCENT,
         color="#FFFFFF",
         on_click=lambda _: switch_tab("workspace"),
     )
-    tab_settings_btn = ft.ElevatedButton(
+    tab_settings_btn = _Button(
         "API Keys & AI",
         icon=ft.Icons.KEY,
         bgcolor=SURFACE_ELEVATED,
@@ -1267,4 +1270,5 @@ def run_gui():
 
 
 if __name__ == "__main__":
+    run_gui()
     run_gui()
